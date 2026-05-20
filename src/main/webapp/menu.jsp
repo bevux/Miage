@@ -25,6 +25,11 @@
     <%-- Lien vers la table de multiplication du nombre 5 par défaut.
          L'utilisateur peut changer le nombre dans l'URL. --%>
     <a href="${pageContext.request.contextPath}/multiplication?nombre=5">Table de multiplication</a>
+
+    <%-- TP Morpion --%>
+    <a href="${pageContext.request.contextPath}/bonjour">Partie 1 – Bonjour</a>
+    <a href="${pageContext.request.contextPath}/tableau-chaines">Partie 2 – Tableau</a>
+    <a href="${pageContext.request.contextPath}/morpion">Partie 3 – Morpion</a>
 </nav>
 
 <hr />
