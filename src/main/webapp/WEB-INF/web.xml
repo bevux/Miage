@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ================================================================
+  WEB.XML : Fichier de configuration de l'application web
+  ================================================================
+  web.xml est le "descripteur de déploiement" de l'application.
+  Il configure comment le serveur (Tomcat) doit gérer l'application.
+
+  AUJOURD'HUI, il est moins utilisé car les annotations Java
+  (@WebServlet, etc.) font le même travail directement dans le code.
+  Mais web.xml reste utile pour certaines configurations globales.
+
+  STRUCTURE :
+    <servlet>         → déclare une servlet (son nom et sa classe Java)
+    <servlet-mapping> → associe une servlet à une URL
+    <welcome-file>    → page affichée par défaut (http://localhost:8080/Projet_1/)
+
+  ⚡ ASTUCE : Si vous utilisez @WebServlet dans vos classes Java,
+              vous n'avez PAS besoin de déclarer les <servlet> et
+              <servlet-mapping> ici. Les deux méthodes font la même chose.
+              Ne les déclarez pas en double sinon vous aurez des erreurs !
+  ================================================================
+-->
+
+<web-app
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://java.sun.com/xml/ns/javaee"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+                        http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+    version="3.0">
+
+    <!--
+      EXEMPLE de déclaration manuelle d'une servlet (sans annotation) :
+
+      <servlet>
+          <servlet-name>monControleur</servlet-name>
+          <servlet-class>com.controleur_1</servlet-class>
+      </servlet>
+
+      <servlet-mapping>
+          <servlet-name>monControleur</servlet-name>
+          <url-pattern>/controleur_1</url-pattern>
+      </servlet-mapping>
+
+      Mais ici on utilise @WebServlet directement dans le code Java,
+      donc ces blocs sont inutiles et on les laisse en commentaire.
+    -->
+
+    <!-- Page d'accueil : quand l'utilisateur va sur http://localhost:8080/Projet_1/
+         le serveur affiche automatiquement index.jsp -->
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
+</web-app>

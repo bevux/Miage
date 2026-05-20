@@ -1,0 +1,17 @@
+# Fichiers compilés Java
+*.class
+*.jar
+*.war
+
+# Dossier de build Eclipse
+build/
+bin/
+target/
+
+# Fichiers de configuration Eclipse (spécifiques à ta machine)
+.classpath
+.project
+.settings/
+
+# Fichiers macOS
+.DS_Store
