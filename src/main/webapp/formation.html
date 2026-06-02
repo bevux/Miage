@@ -3,510 +3,852 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MIAGE – Master Sciences des Données</title>
+    <title>Master MIAGE – Université des Antilles</title>
 
-    <!-- Bootstrap 5 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
         :root {
-            --ua-blue:   #003f7f;
-            --ua-teal:   #00897b;
-            --ua-light:  #f0f4f8;
-            --ua-accent: #e65100;
+            --blue:       #00337a;
+            --blue-mid:   #1a4f9c;
+            --blue-light: #e8eef7;
+            --teal:       #006d6d;
+            --teal-light: #e0f0f0;
+            --gold:       #c8930a;
+            --text:       #1a1a2e;
+            --muted:      #6b7280;
+            --border:     #e2e6ea;
+            --bg:         #f7f8fc;
+            --white:      #ffffff;
         }
 
-        /* ── Hero ── */
-        .hero {
-            background: linear-gradient(135deg, var(--ua-blue) 0%, #005cbf 60%, var(--ua-teal) 100%);
-            color: #fff;
-            padding: 3.5rem 1.5rem 2.5rem;
-        }
-        .hero .badge-type {
-            background: rgba(255,255,255,.2);
-            font-size: .8rem;
-            letter-spacing: .05em;
-        }
-        .hero h1 { font-size: clamp(1.4rem, 4vw, 2.4rem); font-weight: 700; }
-        .hero .subtitle { opacity: .85; font-size: clamp(.9rem, 2.5vw, 1.1rem); }
+        html { scroll-behavior: smooth; }
 
-        /* ── Sticky nav ── */
-        .section-nav {
-            background: var(--ua-blue);
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+            background: var(--bg);
+            font-size: 15px;
+            line-height: 1.65;
+        }
+
+        /* ─── TOP BAR ─── */
+        .topbar {
+            background: var(--blue);
+            color: rgba(255,255,255,.7);
+            font-size: 12px;
+            letter-spacing: .02em;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,.1);
+        }
+        .topbar a { color: rgba(255,255,255,.85); text-decoration: none; }
+        .topbar a:hover { color: #fff; }
+
+        /* ─── HEADER ─── */
+        .site-header {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 18px 0;
+        }
+        .logo-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            color: var(--blue);
+            line-height: 1.2;
+        }
+        .logo-sub {
+            font-size: 11px;
+            color: var(--muted);
+            letter-spacing: .06em;
+            text-transform: uppercase;
+        }
+        .logo-sep {
+            width: 3px;
+            height: 36px;
+            background: var(--gold);
+            border-radius: 2px;
+        }
+
+        /* ─── NAV ─── */
+        .main-nav {
+            background: var(--blue);
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 200;
         }
-        .section-nav .nav-link {
-            color: rgba(255,255,255,.75);
-            font-size: .82rem;
-            padding: .55rem .75rem;
-            border-radius: 0;
-            transition: color .2s, background .2s;
-        }
-        .section-nav .nav-link:hover,
-        .section-nav .nav-link.active {
-            color: #fff;
-            background: rgba(255,255,255,.12);
-        }
-
-        /* ── Info cards ── */
-        .info-card {
-            border: none;
-            border-radius: .75rem;
-            background: #fff;
-            box-shadow: 0 2px 8px rgba(0,0,0,.08);
-            transition: transform .2s, box-shadow .2s;
-        }
-        .info-card:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,.12); }
-        .info-card .icon-wrap {
-            width: 3rem; height: 3rem;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.4rem;
-        }
-
-        /* ── Section titles ── */
-        .section-title {
-            font-weight: 700;
-            color: var(--ua-blue);
-            border-left: 4px solid var(--ua-teal);
-            padding-left: .75rem;
-            margin-bottom: 1.25rem;
-        }
-
-        /* ── Semester tabs ── */
-        .sem-tab .nav-link {
-            color: var(--ua-blue);
-            border-radius: .5rem .5rem 0 0;
+        .main-nav .nav-link {
+            color: rgba(255,255,255,.72);
+            font-size: 13px;
             font-weight: 500;
+            letter-spacing: .03em;
+            padding: 14px 16px;
+            border-bottom: 2px solid transparent;
+            transition: color .15s, border-color .15s;
         }
-        .sem-tab .nav-link.active {
-            background: var(--ua-blue);
+        .main-nav .nav-link:hover { color: #fff; }
+        .main-nav .nav-link.active {
             color: #fff;
-            border-color: var(--ua-blue);
+            border-bottom-color: var(--gold);
         }
 
-        /* ── UE accordion ── */
-        .accordion-button:not(.collapsed) {
-            background: var(--ua-blue);
+        /* ─── HERO ─── */
+        .hero {
+            background: var(--blue);
             color: #fff;
+            padding: 60px 0 50px;
+            position: relative;
+            overflow: hidden;
         }
-        .accordion-button:not(.collapsed)::after { filter: invert(1); }
-        .accordion-button { font-weight: 600; }
-
-        /* ── Matière card ── */
-        .matiere-card {
-            border-left: 4px solid var(--ua-teal);
-            border-radius: .5rem;
-            background: #fff;
-            padding: 1rem 1.25rem;
-            margin-bottom: .75rem;
-            box-shadow: 0 1px 4px rgba(0,0,0,.06);
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(135deg, rgba(0,80,160,.6) 0%, transparent 60%),
+                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         }
-        .matiere-card h6 { color: var(--ua-blue); font-weight: 700; margin-bottom: .4rem; }
-        .badge-volume { background: var(--ua-light); color: var(--ua-blue); font-size: .72rem; }
-        .badge-ects   { background: var(--ua-teal);  color: #fff;          font-size: .72rem; }
-        .badge-coef   { background: var(--ua-accent); color: #fff;          font-size: .72rem; }
-
-        /* ── Volume bar ── */
-        .vol-row { font-size: .78rem; color: #555; }
-        .vol-bar  { height: 4px; border-radius: 2px; background: var(--ua-teal); margin-top: 2px; }
-
-        /* ── Syllabus ── */
-        details summary { cursor: pointer; color: var(--ua-blue); font-size: .82rem; }
-        details .syllabus-body { font-size: .82rem; color: #444; margin-top: .4rem; }
-
-        /* ── Responsive tweaks ── */
-        @media (max-width: 576px) {
-            .hero { padding: 2.5rem 1rem 1.75rem; }
-            .info-card .icon-wrap { width: 2.4rem; height: 2.4rem; font-size: 1.1rem; }
+        .hero-breadcrumb {
+            font-size: 12px;
+            color: rgba(255,255,255,.55);
+            letter-spacing: .04em;
+            margin-bottom: 20px;
+        }
+        .hero-breadcrumb span { color: rgba(255,255,255,.3); margin: 0 6px; }
+        .hero-eyebrow {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 12px;
+        }
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+            line-height: 1.2;
+            margin-bottom: 14px;
+            max-width: 720px;
+        }
+        .hero-parcours {
+            font-size: 15px;
+            color: rgba(255,255,255,.75);
+            margin-bottom: 28px;
+        }
+        .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+        .hero-tag {
+            background: rgba(255,255,255,.1);
+            border: 1px solid rgba(255,255,255,.18);
+            color: rgba(255,255,255,.88);
+            font-size: 12px;
+            font-weight: 500;
+            padding: 5px 12px;
+            border-radius: 20px;
+        }
+        .hero-tag.gold {
+            background: rgba(200,147,10,.18);
+            border-color: rgba(200,147,10,.4);
+            color: #f5c842;
         }
 
-        /* ── Loading / error ── */
-        #loading-state { padding: 5rem 1rem; }
-        .spinner-border { width: 3rem; height: 3rem; color: var(--ua-blue); }
+        /* ─── SECTIONS ─── */
+        section { padding: 52px 0; }
+        section + section { border-top: 1px solid var(--border); }
 
-        /* ── Footer ── */
-        footer { background: var(--ua-blue); color: rgba(255,255,255,.7); font-size: .82rem; }
-        footer a { color: rgba(255,255,255,.85); }
+        .section-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 8px;
+        }
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+            color: var(--blue);
+            margin-bottom: 28px;
+        }
+
+        /* ─── FICHE INFO ─── */
+        .fiche {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .fiche-row {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+        }
+        .fiche-row:last-child { border-bottom: none; }
+        .fiche-label {
+            width: 140px;
+            flex-shrink: 0;
+            background: var(--blue-light);
+            color: var(--blue);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: .03em;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+        }
+        .fiche-value {
+            padding: 12px 16px;
+            color: var(--text);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* ─── TEXTE OBJECTIFS ─── */
+        .prose { max-width: 780px; color: #2d3748; line-height: 1.8; }
+        .prose p { margin-bottom: 1rem; }
+        .prose ul { padding-left: 1.4rem; margin-bottom: 1rem; }
+        .prose li { margin-bottom: .4rem; }
+        .prose strong { color: var(--blue); }
+
+        /* ─── ONGLETS DESCRIPTION ─── */
+        .desc-tabs { border-bottom: 2px solid var(--border); margin-bottom: 0; }
+        .desc-tabs .nav-link {
+            color: var(--muted);
+            font-size: 14px;
+            font-weight: 500;
+            padding: 12px 20px;
+            border: none;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            border-radius: 0;
+            background: none;
+            transition: color .15s;
+        }
+        .desc-tabs .nav-link:hover { color: var(--blue); }
+        .desc-tabs .nav-link.active {
+            color: var(--blue);
+            border-bottom-color: var(--blue);
+            font-weight: 600;
+        }
+        .desc-panel {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-top: none;
+            padding: 28px 32px;
+            border-radius: 0 0 8px 8px;
+        }
+
+        /* ─── PROGRAMME ─── */
+        .sem-nav { border-bottom: 2px solid var(--border); margin-bottom: 0; gap: 0; }
+        .sem-nav .nav-link {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--muted);
+            padding: 11px 18px;
+            border: none;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            border-radius: 0;
+            background: none;
+            white-space: nowrap;
+            transition: color .15s;
+        }
+        .sem-nav .nav-link:hover { color: var(--blue); }
+        .sem-nav .nav-link.active {
+            color: var(--blue);
+            border-bottom-color: var(--blue);
+            font-weight: 600;
+        }
+        .sem-panel {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+        }
+
+        /* ─── UE ─── */
+        .ue-item { border-bottom: 1px solid var(--border); }
+        .ue-item:last-child { border-bottom: none; }
+        .ue-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            cursor: pointer;
+            user-select: none;
+            gap: 12px;
+            transition: background .15s;
+        }
+        .ue-header:hover { background: var(--bg); }
+        .ue-header.open { background: var(--blue-light); }
+        .ue-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--blue);
+            flex: 1;
+        }
+        .ue-meta { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+        .tag {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 9px;
+            border-radius: 4px;
+        }
+        .tag-blue  { background: var(--blue-light);  color: var(--blue); }
+        .tag-teal  { background: var(--teal-light);  color: var(--teal); }
+        .tag-gold  { background: #fef3d8; color: var(--gold); }
+        .tag-gray  { background: #f0f0f5; color: #555; }
+        .ue-chevron {
+            color: var(--muted);
+            font-size: 11px;
+            transition: transform .2s;
+            flex-shrink: 0;
+        }
+        .ue-chevron.open { transform: rotate(180deg); }
+
+        /* ─── MATIERES ─── */
+        .ue-body { display: none; padding: 0 24px 20px; }
+        .ue-body.open { display: block; }
+
+        .matiere {
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+        .matiere-head {
+            padding: 14px 18px 10px;
+            background: var(--white);
+        }
+        .matiere-name {
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
+        .matiere-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+
+        /* volumes table */
+        .vol-table {
+            width: 100%;
+            font-size: 12px;
+            border-collapse: collapse;
+        }
+        .vol-table th {
+            color: var(--muted);
+            font-weight: 500;
+            text-align: center;
+            padding: 6px 10px;
+            background: var(--bg);
+            border-top: 1px solid var(--border);
+        }
+        .vol-table td {
+            text-align: center;
+            padding: 6px 10px;
+            border-top: 1px solid var(--border);
+            color: var(--text);
+            font-variant-numeric: tabular-nums;
+        }
+        .vol-table td.total { font-weight: 700; color: var(--blue); }
+
+        /* syllabus */
+        .syllabus-toggle {
+            display: block;
+            width: 100%;
+            text-align: left;
+            background: none;
+            border: none;
+            border-top: 1px solid var(--border);
+            padding: 8px 18px;
+            font-size: 12px;
+            color: var(--teal);
+            font-weight: 500;
+            cursor: pointer;
+            transition: background .15s;
+        }
+        .syllabus-toggle:hover { background: var(--teal-light); }
+        .syllabus-content {
+            display: none;
+            padding: 12px 18px;
+            font-size: 13px;
+            color: #444;
+            background: #fafbff;
+            border-top: 1px solid var(--border);
+            line-height: 1.7;
+        }
+        .syllabus-content.open { display: block; }
+
+        /* responsable */
+        .resp-line {
+            font-size: 12px;
+            color: var(--muted);
+            padding: 0 18px 10px;
+        }
+        .resp-line a { color: var(--teal); text-decoration: none; }
+        .resp-line a:hover { text-decoration: underline; }
+
+        /* ─── CONTACT ─── */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+        }
+        .contact-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px 22px;
+        }
+        .contact-card-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+        .contact-card-value {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--blue);
+        }
+        .contact-card-value a { color: var(--teal); text-decoration: none; }
+        .contact-card-value a:hover { text-decoration: underline; }
+        .contact-card-accent {
+            width: 32px;
+            height: 3px;
+            border-radius: 2px;
+            background: var(--gold);
+            margin-bottom: 12px;
+        }
+
+        /* ─── FOOTER ─── */
+        footer {
+            background: #0d1f3c;
+            color: rgba(255,255,255,.55);
+            font-size: 12.5px;
+            padding: 28px 0;
+            margin-top: 0;
+        }
+        footer a { color: rgba(255,255,255,.7); text-decoration: none; }
+        footer a:hover { color: #fff; }
+        .footer-divider {
+            color: rgba(255,255,255,.2);
+            margin: 0 10px;
+        }
+
+        /* ─── LOADER ─── */
+        #loader {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            color: var(--muted);
+        }
+        .dot-spin {
+            width: 36px; height: 36px;
+            border: 3px solid var(--blue-light);
+            border-top-color: var(--blue);
+            border-radius: 50%;
+            animation: spin .8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 768px) {
+            .hero { padding: 40px 0 36px; }
+            section { padding: 36px 0; }
+            .fiche-label { width: 110px; font-size: 11px; }
+            .desc-panel { padding: 20px; }
+            .ue-header { padding: 13px 16px; }
+            .ue-body { padding: 0 16px 16px; }
+            .sem-nav { overflow-x: auto; flex-wrap: nowrap; }
+            .main-nav .nav-link { padding: 12px 12px; font-size: 12px; }
+            .main-nav { overflow-x: auto; }
+        }
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 1.4rem; }
+            .fiche { font-size: 13px; }
+            .hero-tags .hero-tag { font-size: 11px; }
+            .topbar { display: none; }
+        }
     </style>
 </head>
-<body style="background: var(--ua-light)">
+<body>
 
-<!-- ══════════════════════════════════════════
-     LOADING STATE
-══════════════════════════════════════════ -->
-<div id="loading-state" class="text-center">
-    <div class="spinner-border" role="status"></div>
-    <p class="mt-3 text-muted">Chargement de la formation…</p>
+<!-- ── LOADER ── -->
+<div id="loader">
+    <div class="dot-spin"></div>
+    <span>Chargement de la formation…</span>
 </div>
 
-<!-- ══════════════════════════════════════════
-     MAIN CONTENT (hidden until data loads)
-══════════════════════════════════════════ -->
-<div id="main-content" style="display:none">
+<!-- ── PAGE ── -->
+<div id="page" style="display:none">
 
-    <!-- ── Hero ── -->
-    <header class="hero" id="hero">
-        <div class="container">
-            <div class="d-flex flex-wrap gap-2 mb-3" id="hero-badges"></div>
-            <h1 id="hero-title"></h1>
-            <p class="subtitle" id="hero-parcours"></p>
-            <p class="subtitle mt-1" id="hero-lieu"></p>
+    <!-- Top bar -->
+    <div class="topbar">
+        <div class="container d-flex justify-content-between">
+            <span>Université des Antilles</span>
+            <a href="https://formations.univ-antilles.fr/" target="_blank">formations.univ-antilles.fr ↗</a>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container d-flex align-items-center gap-3">
+            <div class="logo-sep"></div>
+            <div>
+                <div class="logo-text">Université des Antilles</div>
+                <div class="logo-sub">Faculté des Sciences Exactes et Naturelles</div>
+            </div>
         </div>
     </header>
 
-    <!-- ── Sticky section nav ── -->
-    <nav class="section-nav shadow-sm">
+    <!-- Nav -->
+    <nav class="main-nav">
         <div class="container">
-            <ul class="nav flex-nowrap overflow-auto">
-                <li class="nav-item"><a class="nav-link active" href="#infos">Infos</a></li>
-                <li class="nav-item"><a class="nav-link" href="#objectifs">Objectifs</a></li>
-                <li class="nav-item"><a class="nav-link" href="#debouches">Débouchés</a></li>
-                <li class="nav-item"><a class="nav-link" href="#programme">Programme</a></li>
-                <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+            <ul class="nav" id="main-nav">
+                <li><a class="nav-link active" href="#presentation">Présentation</a></li>
+                <li><a class="nav-link" href="#objectifs">Objectifs</a></li>
+                <li><a class="nav-link" href="#programme">Programme</a></li>
+                <li><a class="nav-link" href="#contact">Contact</a></li>
             </ul>
         </div>
     </nav>
 
-    <main class="container py-4 py-md-5">
+    <!-- Hero -->
+    <div class="hero" id="hero">
+        <div class="container position-relative">
+            <div class="hero-breadcrumb">
+                Formations <span>›</span> Master <span>›</span> Sciences, Technologies, Santé
+            </div>
+            <div class="hero-eyebrow" id="hero-type"></div>
+            <h1 id="hero-title"></h1>
+            <p class="hero-parcours" id="hero-parcours"></p>
+            <div class="hero-tags" id="hero-tags"></div>
+        </div>
+    </div>
 
-        <!-- ── Info cards ── -->
-        <section id="infos" class="mb-5">
-            <h2 class="section-title">La formation en bref</h2>
-            <div class="row g-3" id="info-cards"></div>
+    <div class="container">
+
+        <!-- ── PRÉSENTATION ── -->
+        <section id="presentation">
+            <div class="row g-5">
+                <div class="col-lg-7">
+                    <div class="section-label">La formation</div>
+                    <h2 class="section-title" id="pres-title"></h2>
+                    <div class="prose" id="pres-desc"></div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="fiche" id="fiche"></div>
+                </div>
+            </div>
         </section>
 
-        <!-- ── Objectifs / Débouchés / Poursuite (tabs) ── -->
-        <section id="objectifs" class="mb-5">
-            <h2 class="section-title">Objectifs & Débouchés</h2>
-            <ul class="nav nav-tabs" id="descTabs" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-objectif">
-                        <i class="bi bi-bullseye me-1"></i>Objectifs
-                    </button>
+        <!-- ── OBJECTIFS ── -->
+        <section id="objectifs">
+            <div class="section-label">Formation</div>
+            <h2 class="section-title">Objectifs, débouchés &amp; poursuite</h2>
+            <ul class="nav desc-tabs" id="desc-tabs">
+                <li class="nav-item">
+                    <button class="nav-link active" data-target="tab-obj">Objectifs pédagogiques</button>
                 </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-debouche" id="debouches">
-                        <i class="bi bi-briefcase me-1"></i>Débouchés
-                    </button>
+                <li class="nav-item">
+                    <button class="nav-link" data-target="tab-deb">Débouchés professionnels</button>
                 </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-poursuite">
-                        <i class="bi bi-arrow-right-circle me-1"></i>Poursuite
-                    </button>
+                <li class="nav-item">
+                    <button class="nav-link" data-target="tab-pou">Poursuite d'études</button>
                 </li>
             </ul>
-            <div class="tab-content bg-white p-4 rounded-bottom shadow-sm" id="descTabContent">
-                <div class="tab-pane fade show active" id="tab-objectif"></div>
-                <div class="tab-pane fade" id="tab-debouche"></div>
-                <div class="tab-pane fade" id="tab-poursuite"></div>
+            <div class="desc-panel">
+                <div class="prose" id="tab-obj"></div>
+                <div class="prose" id="tab-deb" style="display:none"></div>
+                <div class="prose" id="tab-pou" style="display:none"></div>
             </div>
         </section>
 
-        <!-- ── Programme par semestre ── -->
-        <section id="programme" class="mb-5">
-            <h2 class="section-title">Programme</h2>
-            <!-- Semester tabs generated dynamically -->
-            <ul class="nav nav-tabs sem-tab" id="semTabs" role="tablist"></ul>
-            <div class="tab-content bg-white rounded-bottom shadow-sm p-3 p-md-4" id="semContent"></div>
-        </section>
-
-        <!-- ── Contact ── -->
-        <section id="contact" class="mb-5">
-            <h2 class="section-title">Contact</h2>
-            <div class="row g-3">
-                <div class="col-12 col-md-6">
-                    <div class="info-card card p-3">
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="icon-wrap" style="background:#e3f2fd">
-                                <i class="bi bi-person-circle" style="color:var(--ua-blue)"></i>
-                            </div>
-                            <div>
-                                <div class="text-muted small">Responsable</div>
-                                <a id="contact-resp" href="#" class="fw-semibold text-decoration-none" style="color:var(--ua-blue)"></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-md-6">
-                    <div class="info-card card p-3">
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="icon-wrap" style="background:#e8f5e9">
-                                <i class="bi bi-geo-alt-fill" style="color:var(--ua-teal)"></i>
-                            </div>
-                            <div>
-                                <div class="text-muted small">Localisation</div>
-                                <div id="contact-lieu" class="fw-semibold" style="color:var(--ua-blue)"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <!-- ── PROGRAMME ── -->
+        <section id="programme">
+            <div class="section-label">Maquette pédagogique</div>
+            <h2 class="section-title">Programme de la formation</h2>
+            <div style="overflow-x:auto">
+                <ul class="nav sem-nav" id="sem-tabs"></ul>
             </div>
+            <div class="sem-panel" id="sem-panels"></div>
         </section>
 
-    </main>
+        <!-- ── CONTACT ── -->
+        <section id="contact">
+            <div class="section-label">Informations pratiques</div>
+            <h2 class="section-title">Contact &amp; localisation</h2>
+            <div class="contact-grid" id="contact-grid"></div>
+        </section>
 
-    <!-- ── Footer ── -->
-    <footer class="py-3">
-        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
-            <span>Université des Antilles – <a href="https://formations.univ-antilles.fr/" target="_blank">formations.univ-antilles.fr</a></span>
-            <span class="opacity-50">Données chargées depuis l'API Formation</span>
+    </div><!-- /container -->
+
+    <!-- Footer -->
+    <footer>
+        <div class="container d-flex flex-column flex-md-row justify-content-between gap-2">
+            <span>© Université des Antilles — Tous droits réservés</span>
+            <span>
+                <a href="https://formations.univ-antilles.fr/" target="_blank">Catalogue des formations</a>
+                <span class="footer-divider">·</span>
+                <a href="https://formations.univ-antilles.fr/api/?formation=45" target="_blank">Source API</a>
+            </span>
         </div>
     </footer>
 
-</div><!-- /main-content -->
+</div><!-- /page -->
 
-<!-- Bootstrap 5 JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
 <script>
-// ──────────────────────────────────────────────
-//  Helpers
-// ──────────────────────────────────────────────
-function stripHtml(html) {
+/* ── Utilitaires ── */
+function clean(html) {
     if (!html) return '';
-    const div = document.createElement('div');
-    div.innerHTML = html;
-    return div.innerHTML; // keep formatted HTML but sanitised
-}
-
-function cleanHtml(html) {
-    if (!html) return '<em class="text-muted">Non renseigné</em>';
-    // Remove <!--block--> comments
     return html.replace(/<!--block-->/g, '').trim();
 }
-
-function plainText(html) {
+function txt(html) {
     if (!html) return '';
     const d = document.createElement('div');
     d.innerHTML = html;
     return d.textContent.trim();
 }
-
-function totalVol(m) {
+function vol(m) {
     return (+m.volume_horaire_cm||0) + (+m.volume_horaire_ci||0)
          + (+m.volume_horaire_td||0) + (+m.volume_horaire_tp||0);
 }
+function tag(t, cls) {
+    return `<span class="tag ${cls}">${t}</span>`;
+}
 
-// ──────────────────────────────────────────────
-//  Info card factory
-// ──────────────────────────────────────────────
-function makeInfoCard(icon, color, bg, label, value) {
+/* ── Matière ── */
+function renderMatiere(m) {
+    const total = vol(m);
+    const hasSyl = m.syllabus && txt(m.syllabus).length > 10;
+    const resp   = m.responsable;
+
+    const volRow = (total > 0) ? `
+        <table class="vol-table">
+          <tr>
+            ${+m.volume_horaire_cm ? `<th>CM</th>` : ''}
+            ${+m.volume_horaire_ci ? `<th>CI</th>` : ''}
+            ${+m.volume_horaire_td ? `<th>TD</th>` : ''}
+            ${+m.volume_horaire_tp ? `<th>TP</th>` : ''}
+            <th>Total</th>
+          </tr>
+          <tr>
+            ${+m.volume_horaire_cm ? `<td>${m.volume_horaire_cm}h</td>` : ''}
+            ${+m.volume_horaire_ci ? `<td>${m.volume_horaire_ci}h</td>` : ''}
+            ${+m.volume_horaire_td ? `<td>${m.volume_horaire_td}h</td>` : ''}
+            ${+m.volume_horaire_tp ? `<td>${m.volume_horaire_tp}h</td>` : ''}
+            <td class="total">${total}h</td>
+          </tr>
+        </table>` : '';
+
+    const tags = [
+        m.ects       ? tag(`${m.ects} ECTS`, 'tag-teal') : '',
+        m.coefmatiere ? tag(`Coef. ${m.coefmatiere}`, 'tag-gold') : '',
+    ].filter(Boolean).join('');
+
+    const sylBtn = hasSyl
+        ? `<button class="syllabus-toggle" onclick="toggleSyl(this)">▾ Voir le syllabus</button>
+           <div class="syllabus-content">${clean(m.syllabus)}</div>`
+        : '';
+
+    const respLine = resp
+        ? `<div class="resp-line">Responsable : <a href="mailto:${resp}">${resp}</a></div>`
+        : '';
+
     return `
-    <div class="col-6 col-md-4 col-lg-3">
-      <div class="info-card card p-3 h-100">
-        <div class="d-flex align-items-start gap-3">
-          <div class="icon-wrap flex-shrink-0" style="background:${bg}">
-            <i class="bi bi-${icon}" style="color:${color}"></i>
-          </div>
-          <div>
-            <div class="text-muted small">${label}</div>
-            <div class="fw-semibold" style="color:var(--ua-blue)">${value}</div>
-          </div>
-        </div>
+    <div class="matiere">
+      <div class="matiere-head">
+        <div class="matiere-name">${m.intituler_matiere}</div>
+        <div class="matiere-tags">${tags}</div>
+      </div>
+      ${volRow}
+      ${respLine}
+      ${sylBtn}
+    </div>`;
+}
+
+/* ── UE ── */
+function renderUE(ue, uid) {
+    const totalH = (ue.matiere||[]).reduce((s, m) => s + vol(m), 0);
+    const matieres = (ue.matiere||[]).map(renderMatiere).join('');
+    const meta = [
+        tag(ue.typeUE, 'tag-gray'),
+        tag(`Coef. ${ue.coefue}`, 'tag-blue'),
+        totalH ? tag(`${totalH}h`, 'tag-gray') : '',
+    ].filter(Boolean).join('');
+
+    return `
+    <div class="ue-item">
+      <div class="ue-header" onclick="toggleUE(this, '${uid}')">
+        <div class="ue-title">${ue.descriptifUE}</div>
+        <div class="ue-meta">${meta}</div>
+        <div class="ue-chevron">▼</div>
+      </div>
+      <div class="ue-body" id="${uid}">
+        ${matieres || '<p style="color:var(--muted);font-size:13px">Aucune matière renseignée.</p>'}
       </div>
     </div>`;
 }
 
-// ──────────────────────────────────────────────
-//  Matière card
-// ──────────────────────────────────────────────
-function makeMatiereCard(m) {
-    const vol = totalVol(m);
-    const maxVol = 60;
-    const hasSyl = m.syllabus && plainText(m.syllabus).length > 5;
-
-    const volumes = [
-        { label: 'CM', val: +m.volume_horaire_cm||0, color: '#1565c0' },
-        { label: 'CI', val: +m.volume_horaire_ci||0, color: '#6a1b9a' },
-        { label: 'TD', val: +m.volume_horaire_td||0, color: '#00695c' },
-        { label: 'TP', val: +m.volume_horaire_tp||0, color: '#e65100' },
-    ].filter(v => v.val > 0);
-
-    const volBars = volumes.map(v => `
-        <div class="col-auto">
-          <div class="vol-row">${v.label} : ${v.val}h</div>
-          <div class="vol-bar" style="width:${Math.min(v.val/maxVol*100,100)}px;background:${v.color}"></div>
-        </div>`).join('');
-
-    const syllabus = hasSyl ? `
-        <details class="mt-2">
-          <summary>Voir le syllabus</summary>
-          <div class="syllabus-body mt-2">${cleanHtml(m.syllabus)}</div>
-        </details>` : '';
-
-    const resp = m.responsable
-        ? `<a href="mailto:${m.responsable}" class="text-decoration-none small" style="color:var(--ua-teal)">
-             <i class="bi bi-person-fill me-1"></i>${m.responsable}
-           </a>` : '';
-
-    return `
-    <div class="matiere-card">
-      <h6>${m.intituler_matiere}</h6>
-      <div class="d-flex flex-wrap gap-2 mb-2">
-        ${m.ects  ? `<span class="badge badge-ects">ECTS ${m.ects}</span>` : ''}
-        ${m.coefmatiere ? `<span class="badge badge-coef">Coef ${m.coefmatiere}</span>` : ''}
-        ${vol ? `<span class="badge badge-volume"><i class="bi bi-clock me-1"></i>${vol}h total</span>` : ''}
-      </div>
-      <div class="row g-2 mb-2">${volBars}</div>
-      ${resp}
-      ${syllabus}
-    </div>`;
+/* ── Toggles ── */
+function toggleUE(header, uid) {
+    const body    = document.getElementById(uid);
+    const chevron = header.querySelector('.ue-chevron');
+    const isOpen  = body.classList.contains('open');
+    body.classList.toggle('open', !isOpen);
+    header.classList.toggle('open', !isOpen);
+    chevron.classList.toggle('open', !isOpen);
+}
+function toggleSyl(btn) {
+    const content = btn.nextElementSibling;
+    const open = content.classList.toggle('open');
+    btn.textContent = open ? '▴ Masquer le syllabus' : '▾ Voir le syllabus';
 }
 
-// ──────────────────────────────────────────────
-//  UE accordion item
-// ──────────────────────────────────────────────
-function makeUeAccordion(ue, idx, semId) {
-    const id  = `ue-${semId}-${idx}`;
-    const matieres = (ue.matiere || []).map(makeMatiereCard).join('');
-    const totalHeures = (ue.matiere || []).reduce((s, m) => s + totalVol(m), 0);
-    return `
-    <div class="accordion-item mb-2 border rounded">
-      <h2 class="accordion-header">
-        <button class="accordion-button collapsed rounded" type="button"
-                data-bs-toggle="collapse" data-bs-target="#${id}">
-          <div class="d-flex flex-column flex-sm-row align-items-sm-center gap-2 w-100 me-3">
-            <span>${ue.descriptifUE}</span>
-            <div class="d-flex gap-2 ms-sm-auto flex-wrap">
-              <span class="badge bg-secondary fw-normal">${ue.typeUE}</span>
-              <span class="badge" style="background:var(--ua-teal)">Coef ${ue.coefue}</span>
-              ${totalHeures ? `<span class="badge bg-light text-dark">${totalHeures}h</span>` : ''}
-            </div>
-          </div>
-        </button>
-      </h2>
-      <div id="${id}" class="accordion-collapse collapse">
-        <div class="accordion-body pt-2">
-          ${matieres || '<p class="text-muted">Aucune matière renseignée.</p>'}
-        </div>
-      </div>
-    </div>`;
+/* ── Tabs générique ── */
+function initTabs(tabsEl, panels) {
+    tabsEl.querySelectorAll('[data-target]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            tabsEl.querySelectorAll('[data-target]').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            panels.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.style.display = el.id === btn.dataset.target ? '' : 'none';
+            });
+        });
+    });
 }
 
-// ──────────────────────────────────────────────
-//  Scroll spy for section nav
-// ──────────────────────────────────────────────
+/* ── Scroll spy ── */
 function initScrollSpy() {
-    const sections = ['infos','objectifs','programme','contact'];
-    const links = document.querySelectorAll('.section-nav .nav-link');
-    const observer = new IntersectionObserver(entries => {
+    const links = document.querySelectorAll('#main-nav .nav-link');
+    const ids   = ['presentation', 'objectifs', 'programme', 'contact'];
+    const obs   = new IntersectionObserver(entries => {
         entries.forEach(e => {
             if (e.isIntersecting) {
                 links.forEach(l => l.classList.remove('active'));
-                const link = document.querySelector(`.section-nav a[href="#${e.target.id}"]`);
-                if (link) link.classList.add('active');
+                const a = document.querySelector(`#main-nav a[href="#${e.target.id}"]`);
+                if (a) a.classList.add('active');
             }
         });
-    }, { threshold: 0.3 });
-    sections.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) observer.observe(el);
-    });
+    }, { rootMargin: '-30% 0px -60% 0px' });
+    ids.forEach(id => { const el = document.getElementById(id); if (el) obs.observe(el); });
 }
 
-// ──────────────────────────────────────────────
-//  Main render
-// ──────────────────────────────────────────────
+/* ── Render ── */
 function render(data) {
     const f = data.parametres.element;
 
-    // Hero
-    document.getElementById('hero-title').textContent = f.intitule;
-    document.getElementById('hero-parcours').textContent = f.parcours || '';
-    document.getElementById('hero-lieu').innerHTML =
-        `<i class="bi bi-geo-alt-fill me-1"></i>${plainText(f.lieu)}`;
+    /* Hero */
+    document.getElementById('hero-type').textContent    = `${f.typeformation} · ${f.natureformation} · ${f.modeformation}`;
+    document.getElementById('hero-title').textContent   = f.intitule;
+    document.getElementById('hero-parcours').textContent = f.parcours ? `Parcours : ${f.parcours}` : '';
+    document.getElementById('hero-tags').innerHTML = [
+        f.domaine          ? `<span class="hero-tag">${f.domaine}</span>` : '',
+        f.structureaccueil ? `<span class="hero-tag">${f.structureaccueil}</span>` : '',
+        f.apogee           ? `<span class="hero-tag gold">Code Apogée ${f.apogee}</span>` : '',
+    ].join('');
 
-    const badges = [
-        { text: f.typeformation,    icon: 'mortarboard-fill' },
-        { text: f.natureformation,  icon: 'calendar3' },
-        { text: f.modeformation,    icon: 'building' },
-        { text: f.domaine,          icon: 'grid-3x3-gap' },
-    ];
-    document.getElementById('hero-badges').innerHTML = badges
-        .filter(b => b.text)
-        .map(b => `<span class="badge badge-type px-3 py-2">
-                     <i class="bi bi-${b.icon} me-1"></i>${b.text}
-                   </span>`).join('');
+    /* Présentation */
+    document.getElementById('pres-title').textContent = f.intitule;
+    document.getElementById('pres-desc').innerHTML = clean(f.objectif) || '<p>Voir onglet Objectifs.</p>';
 
-    // Info cards
-    document.getElementById('info-cards').innerHTML =
-        makeInfoCard('mortarboard-fill', 'var(--ua-blue)', '#e3f2fd', 'Type', f.typeformation) +
-        makeInfoCard('calendar3',        '#6a1b9a',        '#f3e5f5', 'Durée', f.natureformation) +
-        makeInfoCard('building',         'var(--ua-teal)', '#e8f5e9', 'Mode', f.modeformation) +
-        makeInfoCard('grid-3x3-gap',     '#e65100',        '#fbe9e7', 'Domaine', f.domaine) +
-        makeInfoCard('bank',             'var(--ua-blue)', '#e8eaf6', 'Composante', f.structureaccueil) +
-        makeInfoCard('geo-alt-fill',     'var(--ua-teal)', '#e0f2f1', 'Lieu', plainText(f.lieu));
+    /* Fiche */
+    const rows = [
+        ['Type',       f.typeformation],
+        ['Parcours',   f.parcours],
+        ['Domaine',    f.domaine],
+        ['Composante', f.structureaccueil],
+        ['Mode',       f.modeformation],
+        ['Nature',     f.natureformation],
+        ['Lieu',       txt(f.lieu)],
+    ].filter(r => r[1]);
+    document.getElementById('fiche').innerHTML = rows.map(([l, v]) => `
+        <div class="fiche-row">
+          <div class="fiche-label">${l}</div>
+          <div class="fiche-value">${v}</div>
+        </div>`).join('');
 
-    // Tabs objectifs / débouchés / poursuite
-    document.getElementById('tab-objectif').innerHTML  = cleanHtml(f.objectif);
-    document.getElementById('tab-debouche').innerHTML  = cleanHtml(f.debouche);
-    document.getElementById('tab-poursuite').innerHTML = cleanHtml(f.poursuite);
+    /* Onglets description */
+    document.getElementById('tab-obj').innerHTML = clean(f.objectif)  || '<p><em>Non renseigné.</em></p>';
+    document.getElementById('tab-deb').innerHTML = clean(f.debouche)  || '<p><em>Non renseigné.</em></p>';
+    document.getElementById('tab-pou').innerHTML = clean(f.poursuite) || '<p><em>Non renseigné.</em></p>';
+    initTabs(document.getElementById('desc-tabs'), ['tab-obj', 'tab-deb', 'tab-pou']);
 
-    // Programme : group UE by semestre
+    /* Programme */
     const semMap = new Map();
-    (f.ue || []).forEach(ue => {
-        const key = ue.periode;
-        if (!semMap.has(key)) semMap.set(key, { id: ue.idperiode, ues: [] });
-        semMap.get(key).ues.push(ue);
+    (f.ue||[]).forEach(ue => {
+        if (!semMap.has(ue.periode)) semMap.set(ue.periode, { id: +ue.idperiode, ues: [] });
+        semMap.get(ue.periode).ues.push(ue);
+    });
+    const sems = [...semMap.entries()].sort((a, b) => a[1].id - b[1].id);
+
+    const semTabs   = document.getElementById('sem-tabs');
+    const semPanels = document.getElementById('sem-panels');
+
+    sems.forEach(([label, { ues }], i) => {
+        const pid = `sem-panel-${i}`;
+        const shortLabel = label.replace('semestre', 'Sem.').replace('Semestre', 'Sem.');
+
+        semTabs.innerHTML += `<li class="nav-item">
+            <button class="nav-link${i===0?' active':''}" data-target="${pid}"
+                    onclick="switchSem(this,'${pid}')">${shortLabel}</button></li>`;
+
+        const uesHtml = ues.map((ue, j) => renderUE(ue, `ue-${i}-${j}`)).join('');
+        semPanels.innerHTML += `<div id="${pid}" ${i!==0?'style="display:none"':''}>${uesHtml}</div>`;
     });
 
-    // Sort semesters
-    const semesters = [...semMap.entries()].sort((a, b) => +a[1].id - +b[1].id);
+    /* Contact */
+    const lieu = txt(f.lieu).replace(/\n/g, '<br>');
+    document.getElementById('contact-grid').innerHTML = [
+        { label: 'Responsable pédagogique', value: f.responsable
+            ? `<a href="mailto:${f.responsable}">${f.responsable}</a>`
+            : 'Non renseigné' },
+        { label: 'Localisation', value: lieu },
+        { label: 'Code Apogée', value: f.apogee || '—' },
+        { label: 'Structure d\'accueil', value: f.structureaccueil || '—' },
+    ].map(c => `
+        <div class="contact-card">
+          <div class="contact-card-accent"></div>
+          <div class="contact-card-label">${c.label}</div>
+          <div class="contact-card-value">${c.value}</div>
+        </div>`).join('');
 
-    const tabsEl    = document.getElementById('semTabs');
-    const contentEl = document.getElementById('semContent');
-    tabsEl.innerHTML = '';
-    contentEl.innerHTML = '';
-
-    semesters.forEach(([semLabel, { ues }], i) => {
-        const semId  = `sem-${i}`;
-        const active = i === 0 ? ' active show' : '';
-
-        tabsEl.innerHTML += `
-        <li class="nav-item" role="presentation">
-          <button class="nav-link${i===0?' active':''}" data-bs-toggle="tab"
-                  data-bs-target="#${semId}" type="button">
-            ${semLabel.replace('semestre','Sem.')}
-          </button>
-        </li>`;
-
-        const accordion = ues.map((ue, j) => makeUeAccordion(ue, j, semId)).join('');
-        contentEl.innerHTML += `
-        <div class="tab-pane fade${active}" id="${semId}" role="tabpanel">
-          <div class="accordion accordion-flush mt-2">${accordion}</div>
-        </div>`;
-    });
-
-    // Contact
-    const resp = f.responsable || '';
-    const contactEl = document.getElementById('contact-resp');
-    contactEl.href = `mailto:${resp}`;
-    contactEl.textContent = resp;
-    document.getElementById('contact-lieu').innerHTML = cleanHtml(f.lieu);
-
-    // Show content
-    document.getElementById('loading-state').style.display = 'none';
-    document.getElementById('main-content').style.display  = '';
-
+    /* Affichage */
+    document.getElementById('loader').style.display = 'none';
+    document.getElementById('page').style.display   = '';
     initScrollSpy();
 }
 
-// ──────────────────────────────────────────────
-//  Fetch
-// ──────────────────────────────────────────────
+/* ── Semestre switch ── */
+function switchSem(btn, targetId) {
+    const tabs   = document.querySelectorAll('#sem-tabs .nav-link');
+    const panels = document.querySelectorAll('#sem-panels > div');
+    tabs.forEach(t => t.classList.remove('active'));
+    panels.forEach(p => p.style.display = 'none');
+    btn.classList.add('active');
+    document.getElementById(targetId).style.display = '';
+}
+
+/* ── Fetch ── */
 fetch('https://formations.univ-antilles.fr/api/?formation=45')
     .then(r => r.json())
     .then(render)
     .catch(err => {
-        document.getElementById('loading-state').innerHTML = `
-        <div class="alert alert-danger d-inline-flex gap-2 align-items-center">
-          <i class="bi bi-exclamation-triangle-fill"></i>
-          Impossible de charger les données : ${err.message}
+        document.getElementById('loader').innerHTML = `
+        <div style="max-width:400px;text-align:center;padding:20px">
+          <div style="font-size:2rem;margin-bottom:12px">⚠</div>
+          <div style="font-weight:600;color:#00337a;margin-bottom:8px">Impossible de charger les données</div>
+          <div style="color:#6b7280;font-size:13px">${err.message}</div>
         </div>`;
     });
 </script>
