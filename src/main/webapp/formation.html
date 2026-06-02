@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MIAGE – Master Sciences des Données</title>
+
+    <!-- Bootstrap 5 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+        :root {
+            --ua-blue:   #003f7f;
+            --ua-teal:   #00897b;
+            --ua-light:  #f0f4f8;
+            --ua-accent: #e65100;
+        }
+
+        /* ── Hero ── */
+        .hero {
+            background: linear-gradient(135deg, var(--ua-blue) 0%, #005cbf 60%, var(--ua-teal) 100%);
+            color: #fff;
+            padding: 3.5rem 1.5rem 2.5rem;
+        }
+        .hero .badge-type {
+            background: rgba(255,255,255,.2);
+            font-size: .8rem;
+            letter-spacing: .05em;
+        }
+        .hero h1 { font-size: clamp(1.4rem, 4vw, 2.4rem); font-weight: 700; }
+        .hero .subtitle { opacity: .85; font-size: clamp(.9rem, 2.5vw, 1.1rem); }
+
+        /* ── Sticky nav ── */
+        .section-nav {
+            background: var(--ua-blue);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .section-nav .nav-link {
+            color: rgba(255,255,255,.75);
+            font-size: .82rem;
+            padding: .55rem .75rem;
+            border-radius: 0;
+            transition: color .2s, background .2s;
+        }
+        .section-nav .nav-link:hover,
+        .section-nav .nav-link.active {
+            color: #fff;
+            background: rgba(255,255,255,.12);
+        }
+
+        /* ── Info cards ── */
+        .info-card {
+            border: none;
+            border-radius: .75rem;
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,.08);
+            transition: transform .2s, box-shadow .2s;
+        }
+        .info-card:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,.12); }
+        .info-card .icon-wrap {
+            width: 3rem; height: 3rem;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem;
+        }
+
+        /* ── Section titles ── */
+        .section-title {
+            font-weight: 700;
+            color: var(--ua-blue);
+            border-left: 4px solid var(--ua-teal);
+            padding-left: .75rem;
+            margin-bottom: 1.25rem;
+        }
+
+        /* ── Semester tabs ── */
+        .sem-tab .nav-link {
+            color: var(--ua-blue);
+            border-radius: .5rem .5rem 0 0;
+            font-weight: 500;
+        }
+        .sem-tab .nav-link.active {
+            background: var(--ua-blue);
+            color: #fff;
+            border-color: var(--ua-blue);
+        }
+
+        /* ── UE accordion ── */
+        .accordion-button:not(.collapsed) {
+            background: var(--ua-blue);
+            color: #fff;
+        }
+        .accordion-button:not(.collapsed)::after { filter: invert(1); }
+        .accordion-button { font-weight: 600; }
+
+        /* ── Matière card ── */
+        .matiere-card {
+            border-left: 4px solid var(--ua-teal);
+            border-radius: .5rem;
+            background: #fff;
+            padding: 1rem 1.25rem;
+            margin-bottom: .75rem;
+            box-shadow: 0 1px 4px rgba(0,0,0,.06);
+        }
+        .matiere-card h6 { color: var(--ua-blue); font-weight: 700; margin-bottom: .4rem; }
+        .badge-volume { background: var(--ua-light); color: var(--ua-blue); font-size: .72rem; }
+        .badge-ects   { background: var(--ua-teal);  color: #fff;          font-size: .72rem; }
+        .badge-coef   { background: var(--ua-accent); color: #fff;          font-size: .72rem; }
+
+        /* ── Volume bar ── */
+        .vol-row { font-size: .78rem; color: #555; }
+        .vol-bar  { height: 4px; border-radius: 2px; background: var(--ua-teal); margin-top: 2px; }
+
+        /* ── Syllabus ── */
+        details summary { cursor: pointer; color: var(--ua-blue); font-size: .82rem; }
+        details .syllabus-body { font-size: .82rem; color: #444; margin-top: .4rem; }
+
+        /* ── Responsive tweaks ── */
+        @media (max-width: 576px) {
+            .hero { padding: 2.5rem 1rem 1.75rem; }
+            .info-card .icon-wrap { width: 2.4rem; height: 2.4rem; font-size: 1.1rem; }
+        }
+
+        /* ── Loading / error ── */
+        #loading-state { padding: 5rem 1rem; }
+        .spinner-border { width: 3rem; height: 3rem; color: var(--ua-blue); }
+
+        /* ── Footer ── */
+        footer { background: var(--ua-blue); color: rgba(255,255,255,.7); font-size: .82rem; }
+        footer a { color: rgba(255,255,255,.85); }
+    </style>
+</head>
+<body style="background: var(--ua-light)">
+
+<!-- ══════════════════════════════════════════
+     LOADING STATE
+══════════════════════════════════════════ -->
+<div id="loading-state" class="text-center">
+    <div class="spinner-border" role="status"></div>
+    <p class="mt-3 text-muted">Chargement de la formation…</p>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MAIN CONTENT (hidden until data loads)
+══════════════════════════════════════════ -->
+<div id="main-content" style="display:none">
+
+    <!-- ── Hero ── -->
+    <header class="hero" id="hero">
+        <div class="container">
+            <div class="d-flex flex-wrap gap-2 mb-3" id="hero-badges"></div>
+            <h1 id="hero-title"></h1>
+            <p class="subtitle" id="hero-parcours"></p>
+            <p class="subtitle mt-1" id="hero-lieu"></p>
+        </div>
+    </header>
+
+    <!-- ── Sticky section nav ── -->
+    <nav class="section-nav shadow-sm">
+        <div class="container">
+            <ul class="nav flex-nowrap overflow-auto">
+                <li class="nav-item"><a class="nav-link active" href="#infos">Infos</a></li>
+                <li class="nav-item"><a class="nav-link" href="#objectifs">Objectifs</a></li>
+                <li class="nav-item"><a class="nav-link" href="#debouches">Débouchés</a></li>
+                <li class="nav-item"><a class="nav-link" href="#programme">Programme</a></li>
+                <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container py-4 py-md-5">
+
+        <!-- ── Info cards ── -->
+        <section id="infos" class="mb-5">
+            <h2 class="section-title">La formation en bref</h2>
+            <div class="row g-3" id="info-cards"></div>
+        </section>
+
+        <!-- ── Objectifs / Débouchés / Poursuite (tabs) ── -->
+        <section id="objectifs" class="mb-5">
+            <h2 class="section-title">Objectifs & Débouchés</h2>
+            <ul class="nav nav-tabs" id="descTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-objectif">
+                        <i class="bi bi-bullseye me-1"></i>Objectifs
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-debouche" id="debouches">
+                        <i class="bi bi-briefcase me-1"></i>Débouchés
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-poursuite">
+                        <i class="bi bi-arrow-right-circle me-1"></i>Poursuite
+                    </button>
+                </li>
+            </ul>
+            <div class="tab-content bg-white p-4 rounded-bottom shadow-sm" id="descTabContent">
+                <div class="tab-pane fade show active" id="tab-objectif"></div>
+                <div class="tab-pane fade" id="tab-debouche"></div>
+                <div class="tab-pane fade" id="tab-poursuite"></div>
+            </div>
+        </section>
+
+        <!-- ── Programme par semestre ── -->
+        <section id="programme" class="mb-5">
+            <h2 class="section-title">Programme</h2>
+            <!-- Semester tabs generated dynamically -->
+            <ul class="nav nav-tabs sem-tab" id="semTabs" role="tablist"></ul>
+            <div class="tab-content bg-white rounded-bottom shadow-sm p-3 p-md-4" id="semContent"></div>
+        </section>
+
+        <!-- ── Contact ── -->
+        <section id="contact" class="mb-5">
+            <h2 class="section-title">Contact</h2>
+            <div class="row g-3">
+                <div class="col-12 col-md-6">
+                    <div class="info-card card p-3">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="icon-wrap" style="background:#e3f2fd">
+                                <i class="bi bi-person-circle" style="color:var(--ua-blue)"></i>
+                            </div>
+                            <div>
+                                <div class="text-muted small">Responsable</div>
+                                <a id="contact-resp" href="#" class="fw-semibold text-decoration-none" style="color:var(--ua-blue)"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="info-card card p-3">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="icon-wrap" style="background:#e8f5e9">
+                                <i class="bi bi-geo-alt-fill" style="color:var(--ua-teal)"></i>
+                            </div>
+                            <div>
+                                <div class="text-muted small">Localisation</div>
+                                <div id="contact-lieu" class="fw-semibold" style="color:var(--ua-blue)"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ── Footer ── -->
+    <footer class="py-3">
+        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+            <span>Université des Antilles – <a href="https://formations.univ-antilles.fr/" target="_blank">formations.univ-antilles.fr</a></span>
+            <span class="opacity-50">Données chargées depuis l'API Formation</span>
+        </div>
+    </footer>
+
+</div><!-- /main-content -->
+
+<!-- Bootstrap 5 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+// ──────────────────────────────────────────────
+//  Helpers
+// ──────────────────────────────────────────────
+function stripHtml(html) {
+    if (!html) return '';
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    return div.innerHTML; // keep formatted HTML but sanitised
+}
+
+function cleanHtml(html) {
+    if (!html) return '<em class="text-muted">Non renseigné</em>';
+    // Remove <!--block--> comments
+    return html.replace(/<!--block-->/g, '').trim();
+}
+
+function plainText(html) {
+    if (!html) return '';
+    const d = document.createElement('div');
+    d.innerHTML = html;
+    return d.textContent.trim();
+}
+
+function totalVol(m) {
+    return (+m.volume_horaire_cm||0) + (+m.volume_horaire_ci||0)
+         + (+m.volume_horaire_td||0) + (+m.volume_horaire_tp||0);
+}
+
+// ──────────────────────────────────────────────
+//  Info card factory
+// ──────────────────────────────────────────────
+function makeInfoCard(icon, color, bg, label, value) {
+    return `
+    <div class="col-6 col-md-4 col-lg-3">
+      <div class="info-card card p-3 h-100">
+        <div class="d-flex align-items-start gap-3">
+          <div class="icon-wrap flex-shrink-0" style="background:${bg}">
+            <i class="bi bi-${icon}" style="color:${color}"></i>
+          </div>
+          <div>
+            <div class="text-muted small">${label}</div>
+            <div class="fw-semibold" style="color:var(--ua-blue)">${value}</div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+// ──────────────────────────────────────────────
+//  Matière card
+// ──────────────────────────────────────────────
+function makeMatiereCard(m) {
+    const vol = totalVol(m);
+    const maxVol = 60;
+    const hasSyl = m.syllabus && plainText(m.syllabus).length > 5;
+
+    const volumes = [
+        { label: 'CM', val: +m.volume_horaire_cm||0, color: '#1565c0' },
+        { label: 'CI', val: +m.volume_horaire_ci||0, color: '#6a1b9a' },
+        { label: 'TD', val: +m.volume_horaire_td||0, color: '#00695c' },
+        { label: 'TP', val: +m.volume_horaire_tp||0, color: '#e65100' },
+    ].filter(v => v.val > 0);
+
+    const volBars = volumes.map(v => `
+        <div class="col-auto">
+          <div class="vol-row">${v.label} : ${v.val}h</div>
+          <div class="vol-bar" style="width:${Math.min(v.val/maxVol*100,100)}px;background:${v.color}"></div>
+        </div>`).join('');
+
+    const syllabus = hasSyl ? `
+        <details class="mt-2">
+          <summary>Voir le syllabus</summary>
+          <div class="syllabus-body mt-2">${cleanHtml(m.syllabus)}</div>
+        </details>` : '';
+
+    const resp = m.responsable
+        ? `<a href="mailto:${m.responsable}" class="text-decoration-none small" style="color:var(--ua-teal)">
+             <i class="bi bi-person-fill me-1"></i>${m.responsable}
+           </a>` : '';
+
+    return `
+    <div class="matiere-card">
+      <h6>${m.intituler_matiere}</h6>
+      <div class="d-flex flex-wrap gap-2 mb-2">
+        ${m.ects  ? `<span class="badge badge-ects">ECTS ${m.ects}</span>` : ''}
+        ${m.coefmatiere ? `<span class="badge badge-coef">Coef ${m.coefmatiere}</span>` : ''}
+        ${vol ? `<span class="badge badge-volume"><i class="bi bi-clock me-1"></i>${vol}h total</span>` : ''}
+      </div>
+      <div class="row g-2 mb-2">${volBars}</div>
+      ${resp}
+      ${syllabus}
+    </div>`;
+}
+
+// ──────────────────────────────────────────────
+//  UE accordion item
+// ──────────────────────────────────────────────
+function makeUeAccordion(ue, idx, semId) {
+    const id  = `ue-${semId}-${idx}`;
+    const matieres = (ue.matiere || []).map(makeMatiereCard).join('');
+    const totalHeures = (ue.matiere || []).reduce((s, m) => s + totalVol(m), 0);
+    return `
+    <div class="accordion-item mb-2 border rounded">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed rounded" type="button"
+                data-bs-toggle="collapse" data-bs-target="#${id}">
+          <div class="d-flex flex-column flex-sm-row align-items-sm-center gap-2 w-100 me-3">
+            <span>${ue.descriptifUE}</span>
+            <div class="d-flex gap-2 ms-sm-auto flex-wrap">
+              <span class="badge bg-secondary fw-normal">${ue.typeUE}</span>
+              <span class="badge" style="background:var(--ua-teal)">Coef ${ue.coefue}</span>
+              ${totalHeures ? `<span class="badge bg-light text-dark">${totalHeures}h</span>` : ''}
+            </div>
+          </div>
+        </button>
+      </h2>
+      <div id="${id}" class="accordion-collapse collapse">
+        <div class="accordion-body pt-2">
+          ${matieres || '<p class="text-muted">Aucune matière renseignée.</p>'}
+        </div>
+      </div>
+    </div>`;
+}
+
+// ──────────────────────────────────────────────
+//  Scroll spy for section nav
+// ──────────────────────────────────────────────
+function initScrollSpy() {
+    const sections = ['infos','objectifs','programme','contact'];
+    const links = document.querySelectorAll('.section-nav .nav-link');
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                links.forEach(l => l.classList.remove('active'));
+                const link = document.querySelector(`.section-nav a[href="#${e.target.id}"]`);
+                if (link) link.classList.add('active');
+            }
+        });
+    }, { threshold: 0.3 });
+    sections.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) observer.observe(el);
+    });
+}
+
+// ──────────────────────────────────────────────
+//  Main render
+// ──────────────────────────────────────────────
+function render(data) {
+    const f = data.parametres.element;
+
+    // Hero
+    document.getElementById('hero-title').textContent = f.intitule;
+    document.getElementById('hero-parcours').textContent = f.parcours || '';
+    document.getElementById('hero-lieu').innerHTML =
+        `<i class="bi bi-geo-alt-fill me-1"></i>${plainText(f.lieu)}`;
+
+    const badges = [
+        { text: f.typeformation,    icon: 'mortarboard-fill' },
+        { text: f.natureformation,  icon: 'calendar3' },
+        { text: f.modeformation,    icon: 'building' },
+        { text: f.domaine,          icon: 'grid-3x3-gap' },
+    ];
+    document.getElementById('hero-badges').innerHTML = badges
+        .filter(b => b.text)
+        .map(b => `<span class="badge badge-type px-3 py-2">
+                     <i class="bi bi-${b.icon} me-1"></i>${b.text}
+                   </span>`).join('');
+
+    // Info cards
+    document.getElementById('info-cards').innerHTML =
+        makeInfoCard('mortarboard-fill', 'var(--ua-blue)', '#e3f2fd', 'Type', f.typeformation) +
+        makeInfoCard('calendar3',        '#6a1b9a',        '#f3e5f5', 'Durée', f.natureformation) +
+        makeInfoCard('building',         'var(--ua-teal)', '#e8f5e9', 'Mode', f.modeformation) +
+        makeInfoCard('grid-3x3-gap',     '#e65100',        '#fbe9e7', 'Domaine', f.domaine) +
+        makeInfoCard('bank',             'var(--ua-blue)', '#e8eaf6', 'Composante', f.structureaccueil) +
+        makeInfoCard('geo-alt-fill',     'var(--ua-teal)', '#e0f2f1', 'Lieu', plainText(f.lieu));
+
+    // Tabs objectifs / débouchés / poursuite
+    document.getElementById('tab-objectif').innerHTML  = cleanHtml(f.objectif);
+    document.getElementById('tab-debouche').innerHTML  = cleanHtml(f.debouche);
+    document.getElementById('tab-poursuite').innerHTML = cleanHtml(f.poursuite);
+
+    // Programme : group UE by semestre
+    const semMap = new Map();
+    (f.ue || []).forEach(ue => {
+        const key = ue.periode;
+        if (!semMap.has(key)) semMap.set(key, { id: ue.idperiode, ues: [] });
+        semMap.get(key).ues.push(ue);
+    });
+
+    // Sort semesters
+    const semesters = [...semMap.entries()].sort((a, b) => +a[1].id - +b[1].id);
+
+    const tabsEl    = document.getElementById('semTabs');
+    const contentEl = document.getElementById('semContent');
+    tabsEl.innerHTML = '';
+    contentEl.innerHTML = '';
+
+    semesters.forEach(([semLabel, { ues }], i) => {
+        const semId  = `sem-${i}`;
+        const active = i === 0 ? ' active show' : '';
+
+        tabsEl.innerHTML += `
+        <li class="nav-item" role="presentation">
+          <button class="nav-link${i===0?' active':''}" data-bs-toggle="tab"
+                  data-bs-target="#${semId}" type="button">
+            ${semLabel.replace('semestre','Sem.')}
+          </button>
+        </li>`;
+
+        const accordion = ues.map((ue, j) => makeUeAccordion(ue, j, semId)).join('');
+        contentEl.innerHTML += `
+        <div class="tab-pane fade${active}" id="${semId}" role="tabpanel">
+          <div class="accordion accordion-flush mt-2">${accordion}</div>
+        </div>`;
+    });
+
+    // Contact
+    const resp = f.responsable || '';
+    const contactEl = document.getElementById('contact-resp');
+    contactEl.href = `mailto:${resp}`;
+    contactEl.textContent = resp;
+    document.getElementById('contact-lieu').innerHTML = cleanHtml(f.lieu);
+
+    // Show content
+    document.getElementById('loading-state').style.display = 'none';
+    document.getElementById('main-content').style.display  = '';
+
+    initScrollSpy();
+}
+
+// ──────────────────────────────────────────────
+//  Fetch
+// ──────────────────────────────────────────────
+fetch('https://formations.univ-antilles.fr/api/?formation=45')
+    .then(r => r.json())
+    .then(render)
+    .catch(err => {
+        document.getElementById('loading-state').innerHTML = `
+        <div class="alert alert-danger d-inline-flex gap-2 align-items-center">
+          <i class="bi bi-exclamation-triangle-fill"></i>
+          Impossible de charger les données : ${err.message}
+        </div>`;
+    });
+</script>
+</body>
+</html>
