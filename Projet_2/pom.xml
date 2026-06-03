@@ -72,6 +72,8 @@
                     <deployables>
                         <deployable>
                             <type>war</type>
+                            <pingURL>http://localhost:8080/Projet_2/</pingURL>
+                            <pingTimeout>0</pingTimeout>
                             <properties>
                                 <context>/Projet_2</context>
                             </properties>
