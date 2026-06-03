@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Lanceur pour Projet_2 (Morpion Java EE)
+Lanceur pour Projet_2 (Liste de courses Java EE)
 Utilise Tomcat local s'il est installé, sinon Maven Cargo télécharge Tomcat automatiquement.
 
 Usage :
@@ -77,7 +77,7 @@ def launch_with_tomcat(tomcat_home):
                            "startup.bat" if IS_WINDOWS else "startup.sh")
     print("Démarrage de Tomcat...")
     subprocess.Popen([startup], shell=IS_WINDOWS)
-    print(f"\nApplication disponible sur : http://localhost:{PORT}/{APP_CONTEXT}/morpion")
+    print(f"\nApplication disponible sur : http://localhost:{PORT}/{APP_CONTEXT}/")
     print("(Tomcat tourne en arrière-plan — utilisez shutdown.sh pour l'arrêter)")
 
 
@@ -95,7 +95,7 @@ def stop_tomcat(tomcat_home):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Lanceur Projet_2 Morpion Java EE")
+    parser = argparse.ArgumentParser(description="Lanceur Projet_2 Liste de courses Java EE")
     parser.add_argument("--tomcat", help="Chemin vers le répertoire Tomcat")
     parser.add_argument("--stop",   action="store_true", help="Arrêter Tomcat")
     args = parser.parse_args()
