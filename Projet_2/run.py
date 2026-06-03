@@ -44,9 +44,21 @@ def find_tomcat(hint=None):
                 candidates.append(os.path.join(base, name))
     else:
         candidates += [
-            "/usr/local/tomcat", "/opt/tomcat", "/opt/homebrew/opt/tomcat@10",
-            "/usr/local/opt/tomcat@10", "/usr/share/tomcat10",
+            "/usr/local/tomcat", "/opt/tomcat",
+            "/opt/homebrew/opt/tomcat@11", "/opt/homebrew/opt/tomcat@10",
+            "/opt/homebrew/opt/tomcat",
+            "/usr/local/opt/tomcat@11", "/usr/local/opt/tomcat@10",
+            "/usr/share/tomcat11", "/usr/share/tomcat10",
         ]
+        for prefix_cmd in ["/opt/homebrew/bin/brew", "/usr/local/bin/brew", "brew"]:
+            try:
+                for formula in ["tomcat", "tomcat@11", "tomcat@10"]:
+                    r = subprocess.run([prefix_cmd, "--prefix", formula],
+                                       capture_output=True, text=True)
+                    if r.returncode == 0:
+                        candidates.append(os.path.join(r.stdout.strip(), "libexec"))
+            except FileNotFoundError:
+                pass
         result = shutil.which("catalina.sh")
         if result:
             candidates.append(os.path.dirname(os.path.dirname(result)))
