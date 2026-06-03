@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste de courses</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 500px; margin: 60px auto; }
+        h1   { color: #2c7a2c; }
+        input[type="text"] { padding: 8px; width: 300px; font-size: 16px; }
+        button { padding: 8px 16px; font-size: 16px; background: #2c7a2c; color: white; border: none; cursor: pointer; }
+        button:hover { background: #1e5c1e; }
+    </style>
+</head>
+<body>
+    <h1>🛒 Liste de courses</h1>
+    <p>Ajoutez votre premier produit pour commencer :</p>
+    <form method="post" action="ajouter">
+        <input type="text" name="produit" placeholder="Ex : Lait, Pain, Pommes..." autofocus />
+        <button type="submit">Commencer ma liste</button>
+    </form>
+</body>
+</html>
