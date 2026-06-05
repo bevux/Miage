@@ -1,16 +1,13 @@
 'use strict';
-/* ═══════════════════════════════════════════════════
-   MASTER MIAGE — Université des Antilles
-   formation.js
-   ═══════════════════════════════════════════════════ */
 
-/* ── Utilitaires ── */
+
+/* Utilitaires */
 const clean = h => h ? h.replace(/<!--block-->/g, '').trim() : '';
 const txt   = h => { const d = document.createElement('div'); d.innerHTML = h || ''; return d.textContent.trim(); };
 const vol   = m => [m.volume_horaire_cm, m.volume_horaire_ci, m.volume_horaire_td, m.volume_horaire_tp]
                     .reduce((s, v) => s + (+v || 0), 0);
 
-/* ── Scroll : progression + retour en haut ── */
+/* Scroll : progression + retour en haut */
 window.addEventListener('scroll', () => {
     const h   = document.documentElement;
     const pct = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100;
@@ -18,7 +15,7 @@ window.addEventListener('scroll', () => {
     document.getElementById('back-top').classList.toggle('vis', h.scrollTop > 400);
 }, { passive: true });
 
-/* ── Menu mobile ── */
+/* Menu mobile */
 window.openMenu = () => {
     document.getElementById('mobile-drawer').classList.add('open');
     document.getElementById('nav-overlay').classList.add('open');
@@ -32,7 +29,7 @@ window.closeMenu = () => {
     document.getElementById('mobile-drawer').setAttribute('aria-hidden', 'true');
 };
 
-/* ── Scroll spy ── */
+/* Scroll spy */
 function initScrollSpy() {
     const links = document.querySelectorAll('.desk-nav .nav-link');
     const ids   = ['presentation', 'objectifs', 'programme', 'localisation', 'contact'];
@@ -47,7 +44,7 @@ function initScrollSpy() {
     ids.forEach(id => { const el = document.getElementById(id); if (el) obs.observe(el); });
 }
 
-/* ── Onglets description ── */
+/* Onglets description */
 function initDescTabs() {
     const pairs = [
         ['btn-obj', 'tab-obj'],
@@ -68,7 +65,7 @@ function initDescTabs() {
     });
 }
 
-/* ── Syllabus ── */
+/* Syllabus */
 window.toggleSyl = btn => {
     const body = btn.nextElementSibling;
     const open = body.classList.toggle('open');
@@ -76,7 +73,7 @@ window.toggleSyl = btn => {
     btn.textContent = open ? '- Masquer le syllabus' : '+ Voir le syllabus';
 };
 
-/* ── Rendu d'une matière ── */
+/* Rendu d'une matière */
 function renderMatiere(m) {
     const total  = vol(m);
     const hasSyl = m.syllabus && txt(m.syllabus).length > 10;
@@ -115,7 +112,7 @@ function renderMatiere(m) {
     </article>`;
 }
 
-/* ── Rendu du détail d'une UE ── */
+/* Rendu du détail d'une UE */
 function renderDetail(ue) {
     const totalH   = (ue.matiere || []).reduce((s, m) => s + vol(m), 0);
     const matieres = (ue.matiere || []).map(renderMatiere).join('');
@@ -135,7 +132,7 @@ function renderDetail(ue) {
     </section>`;
 }
 
-/* ── Sélection d'une UE ── */
+/* Sélection d'une UE */
 let currentSemData = {};
 
 function selectUE(btn, semId, ueIdx) {
@@ -155,7 +152,7 @@ function selectUE(btn, semId, ueIdx) {
     }
 }
 
-/* ── Construction de la liste des UE pour un semestre ── */
+/* Construction de la liste des UE pour un semestre */
 function buildUEList(semId, ues) {
     currentSemData[semId] = ues;
     return ues.map((ue, i) => {
@@ -174,7 +171,7 @@ function buildUEList(semId, ues) {
     }).join('');
 }
 
-/* ── Changement de semestre ── */
+/* Changement de semestre */
 function switchSem(btn, semId) {
     // Tabs
     document.querySelectorAll('.sem-btn').forEach(b => b.classList.remove('active'));
@@ -192,7 +189,7 @@ function switchSem(btn, semId) {
     document.getElementById('no-results').style.display = 'none';
 }
 
-/* ── Recherche de matières (toutes UE de tous semestres) ── */
+/* Recherche de matières (toutes UE de tous semestres) */
 function initSearch() {
     document.getElementById('search-mat').addEventListener('input', function () {
         const q = this.value.toLowerCase().trim();
@@ -264,7 +261,7 @@ window.showSearchResult = idx => {
         </section>`;
 };
 
-/* ── Carte Leaflet ── */
+/* Carte Leaflet */
 function initMap() {
     const lat = 16.2657, lng = -61.5387;
     const map = L.map('map', { scrollWheelZoom: false }).setView([lat, lng], 15);
@@ -284,7 +281,7 @@ function initMap() {
      .openPopup();
 }
 
-/* ── Rendu principal ── */
+/* Rendu principal */
 function render(data) {
     const f = data.parametres.element;
 
@@ -392,7 +389,7 @@ function render(data) {
     initScrollSpy();
 }
 
-/* ── Fetch ── */
+/* Fetch */
 fetch('https://formations.univ-antilles.fr/api/?formation=45')
     .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
     .then(render)
