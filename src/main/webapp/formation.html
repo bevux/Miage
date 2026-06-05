@@ -6,189 +6,253 @@
     <title>Master MIAGE – Université des Antilles</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Syne:wght@700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
     <link rel="stylesheet" href="formation.css">
 </head>
 <body>
 
-<div id="progress-bar"></div>
-<button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<div id="progress-bar" role="progressbar" aria-hidden="true"></div>
 
-<!-- ═══════════ LOADER ═══════════ -->
-<div id="loader">
-    <div class="loader-inner">
-        <div class="loader-bar"></div>
-        <span>Chargement…</span>
-    </div>
+<!-- ── Overlay menu mobile ── -->
+<div id="nav-overlay" onclick="closeMenu()"></div>
+
+<!-- ── Loader ── -->
+<div id="loader" role="status" aria-live="polite">
+    <div class="loader-track"><div class="loader-fill"></div></div>
+    <p>Chargement de la formation…</p>
 </div>
 
-<!-- ═══════════ PAGE ═══════════ -->
+<!-- ══════════ PAGE ══════════ -->
 <div id="page" style="display:none">
 
-    <!-- TOP BAR -->
-    <div class="topbar">
-        <div class="container-xl d-flex justify-content-between align-items-center">
+    <!-- TOPBAR -->
+    <div class="topbar" role="banner">
+        <div class="wrap d-flex justify-content-between align-items-center">
             <span>Université des Antilles — Guadeloupe · Martinique</span>
-            <a href="https://www.univ-antilles.fr/" target="_blank">univ-antilles.fr ↗</a>
+            <a href="https://www.univ-antilles.fr/" target="_blank" rel="noopener">univ-antilles.fr ↗</a>
         </div>
     </div>
 
     <!-- HEADER -->
-    <header class="site-header">
-        <div class="container-xl d-flex align-items-center justify-content-between">
-            <div class="logo-wrap">
-                <!-- Logo officiel UA -->
-                <svg class="logo-ua" viewBox="0 0 230 108" xmlns="http://www.w3.org/2000/svg" aria-label="Logo Université des Antilles">
+    <header class="site-header" role="navigation" aria-label="Navigation principale">
+        <div class="wrap header-inner">
+
+            <!-- Logo -->
+            <a href="#" class="logo-wrap" aria-label="Université des Antilles — accueil">
+                <svg class="logo-ua" viewBox="0 0 230 108" xmlns="http://www.w3.org/2000/svg">
                     <defs><clipPath id="ca"><rect x="58" y="0" width="172" height="108"/></clipPath></defs>
-                    <circle cx="78" cy="54" r="88" fill="none" stroke="#0066b3" stroke-width="13" stroke-dasharray="358 554" stroke-dashoffset="-52" clip-path="url(#ca)"/>
-                    <text x="10" y="44" font-family="'Arial Black',Arial,sans-serif" font-size="25" font-weight="900" fill="#0066b3" letter-spacing="-.4">Université</text>
+                    <circle cx="78" cy="54" r="88" fill="none" stroke="#0066b3" stroke-width="13"
+                            stroke-dasharray="358 554" stroke-dashoffset="-52" clip-path="url(#ca)"/>
+                    <text x="10" y="44" font-family="'Arial Black',Arial,sans-serif" font-size="25"
+                          font-weight="900" fill="#0066b3" letter-spacing="-.4">Université</text>
                     <circle cx="166" cy="37" r="7" fill="#f5a623"/>
-                    <text x="10" y="76" font-family="'Arial Black',Arial,sans-serif" font-size="25" font-weight="900" fill="#0066b3" letter-spacing="-.4">des Antilles</text>
+                    <text x="10" y="76" font-family="'Arial Black',Arial,sans-serif" font-size="25"
+                          font-weight="900" fill="#0066b3" letter-spacing="-.4">des Antilles</text>
                     <circle cx="194" cy="69" r="7" fill="#e8311a"/>
                 </svg>
-                <div class="logo-divider"></div>
-                <div>
-                    <div class="logo-text">Faculté des Sciences Exactes et Naturelles</div>
-                    <div class="logo-sub">Campus de Fouillole — Guadeloupe</div>
+                <div class="logo-divider" aria-hidden="true"></div>
+                <div class="logo-meta">
+                    <span class="logo-text">Faculté des Sciences Exactes et Naturelles</span>
+                    <span class="logo-sub">Campus de Fouillole — Guadeloupe</span>
                 </div>
-            </div>
-            <nav class="header-nav" id="header-nav">
-                <a href="#presentation">Présentation</a>
-                <a href="#objectifs">Objectifs</a>
-                <a href="#programme">Programme</a>
-                <a href="#localisation">Localisation</a>
-                <a href="#contact">Contact</a>
+            </a>
+
+            <!-- Navigation desktop -->
+            <nav class="desk-nav" aria-label="Sections de la page">
+                <a href="#presentation" class="nav-link">Présentation</a>
+                <a href="#objectifs"    class="nav-link">Objectifs</a>
+                <a href="#programme"   class="nav-link">Programme</a>
+                <a href="#localisation" class="nav-link">Localisation</a>
+                <a href="#contact"     class="nav-link">Contact</a>
             </nav>
+
+            <!-- Bouton menu mobile -->
+            <button class="burger" onclick="openMenu()" aria-label="Ouvrir le menu" aria-expanded="false" id="burger-btn">
+                <span></span><span></span><span></span>
+            </button>
         </div>
     </header>
 
+    <!-- MENU MOBILE (drawer) -->
+    <nav class="mobile-drawer" id="mobile-drawer" aria-label="Menu mobile" aria-hidden="true">
+        <div class="drawer-head">
+            <span>Navigation</span>
+            <button onclick="closeMenu()" aria-label="Fermer le menu">✕</button>
+        </div>
+        <a href="#presentation" class="drawer-link" onclick="closeMenu()">Présentation</a>
+        <a href="#objectifs"    class="drawer-link" onclick="closeMenu()">Objectifs</a>
+        <a href="#programme"   class="drawer-link" onclick="closeMenu()">Programme</a>
+        <a href="#localisation" class="drawer-link" onclick="closeMenu()">Localisation</a>
+        <a href="#contact"     class="drawer-link" onclick="closeMenu()">Contact</a>
+    </nav>
+
     <!-- HERO -->
-    <section class="hero">
-        <div class="hero-bg"></div>
-        <div class="hero-overlay"></div>
-        <div class="hero-hex"></div>
-        <div class="container-xl hero-content">
-            <div class="hero-inner">
-                <p class="hero-breadcrumb">Formations <span>/</span> Master <span>/</span> Sciences, Technologies, Santé</p>
-                <p class="hero-eyebrow" id="hero-eyebrow"></p>
-                <h1 id="hero-title"></h1>
-                <p class="hero-parcours" id="hero-parcours"></p>
-                <div class="hero-tags" id="hero-tags"></div>
-            </div>
+    <section class="hero" aria-label="En-tête de la formation">
+        <div class="hero-bg"     aria-hidden="true"></div>
+        <div class="hero-overlay" aria-hidden="true"></div>
+        <div class="hero-hex"   aria-hidden="true"></div>
+        <div class="wrap hero-body">
+            <p class="breadcrumb">Formations <span aria-hidden="true">/</span> Master <span aria-hidden="true">/</span> Sciences, Technologies, Santé</p>
+            <p class="hero-label" id="hero-label"></p>
+            <h1 id="hero-title"></h1>
+            <p class="hero-parcours" id="hero-parcours"></p>
+            <div class="hero-chips" id="hero-chips"></div>
         </div>
     </section>
 
     <!-- STATS -->
-    <div class="stats-strip">
-        <div class="container-xl">
-            <div class="stats-grid">
-                <div class="stat-cell"><div class="stat-n" id="s-sem">—</div><div class="stat-l">Semestres</div></div>
-                <div class="stat-cell"><div class="stat-n" id="s-ue">—</div><div class="stat-l">Unités d'ens.</div></div>
-                <div class="stat-cell"><div class="stat-n" id="s-mat">—</div><div class="stat-l">Matières</div></div>
-                <div class="stat-cell"><div class="stat-n" id="s-ects">—</div><div class="stat-l">ECTS total</div></div>
-                <div class="stat-cell"><div class="stat-n" id="s-mode">—</div><div class="stat-l">Mode</div></div>
-            </div>
+    <div class="stats-bar" role="region" aria-label="Chiffres clés">
+        <div class="wrap stats-grid">
+            <div class="stat"><b id="s-sem">—</b><span>Semestres</span></div>
+            <div class="stat"><b id="s-ue">—</b><span>Unités d'ens.</span></div>
+            <div class="stat"><b id="s-mat">—</b><span>Matières</span></div>
+            <div class="stat"><b id="s-ects">—</b><span>ECTS total</span></div>
+            <div class="stat"><b id="s-mode">—</b><span>Mode</span></div>
         </div>
     </div>
 
-    <main class="container-xl">
+    <!-- ACCÈS RAPIDES -->
+    <div class="quicklinks" role="navigation" aria-label="Accès rapides">
+        <div class="wrap quicklinks-row">
+            <a href="#objectifs"    class="ql"><span class="ql-ico">🎯</span>Objectifs</a>
+            <a href="#programme"   class="ql"><span class="ql-ico">📚</span>Programme</a>
+            <a href="#localisation" class="ql"><span class="ql-ico">📍</span>Campus</a>
+            <a href="#contact"     class="ql"><span class="ql-ico">✉</span>Contact</a>
+        </div>
+    </div>
+
+    <!-- ══════ MAIN ══════ -->
+    <main id="main-content">
 
         <!-- ── PRÉSENTATION ── -->
-        <section id="presentation" class="section">
-            <div class="section-head">
-                <span class="section-label">La formation</span>
-                <h2 class="section-title" id="pres-title"></h2>
-            </div>
-            <div class="two-col">
-                <div class="prose" id="pres-objectif"></div>
-                <aside>
-                    <div class="fiche">
-                        <div class="fiche-head">Fiche signalétique</div>
-                        <div id="fiche-rows"></div>
-                    </div>
-                </aside>
+        <section id="presentation" class="page-section" aria-labelledby="h-presentation">
+            <div class="wrap">
+                <header class="section-hd">
+                    <span class="section-tag">La formation</span>
+                    <h2 class="section-title" id="h-presentation" id="pres-title2"></h2>
+                </header>
+                <div class="two-col">
+                    <div class="prose" id="pres-objectif"></div>
+                    <aside aria-label="Fiche signalétique">
+                        <div class="fiche">
+                            <div class="fiche-hd">Fiche signalétique</div>
+                            <dl id="fiche-dl"></dl>
+                        </div>
+                    </aside>
+                </div>
             </div>
         </section>
 
         <!-- ── OBJECTIFS / DÉBOUCHÉS / POURSUITE ── -->
-        <section id="objectifs" class="section">
-            <div class="section-head">
-                <span class="section-label">Formation</span>
-                <h2 class="section-title">Objectifs, débouchés &amp; poursuite</h2>
-            </div>
-            <div class="tab-bar" id="desc-tabs">
-                <button class="tab-btn active" data-target="tab-obj">Objectifs pédagogiques</button>
-                <button class="tab-btn" data-target="tab-deb">Débouchés professionnels</button>
-                <button class="tab-btn" data-target="tab-pou">Poursuite d'études</button>
-            </div>
-            <div class="tab-body">
-                <div class="prose" id="tab-obj"></div>
-                <div class="prose" id="tab-deb" style="display:none"></div>
-                <div class="prose" id="tab-pou" style="display:none"></div>
+        <section id="objectifs" class="page-section" aria-labelledby="h-objectifs">
+            <div class="wrap">
+                <header class="section-hd">
+                    <span class="section-tag">Formation</span>
+                    <h2 class="section-title" id="h-objectifs">Objectifs, débouchés &amp; poursuite</h2>
+                </header>
+                <div class="tabs" role="tablist" aria-label="Informations sur la formation">
+                    <button class="tab active" role="tab" aria-selected="true"  aria-controls="tab-obj" id="btn-obj">Objectifs pédagogiques</button>
+                    <button class="tab"         role="tab" aria-selected="false" aria-controls="tab-deb" id="btn-deb">Débouchés professionnels</button>
+                    <button class="tab"         role="tab" aria-selected="false" aria-controls="tab-pou" id="btn-pou">Poursuite d'études</button>
+                </div>
+                <div class="tab-panel" id="tab-obj" role="tabpanel" aria-labelledby="btn-obj">
+                    <div class="prose" id="content-obj"></div>
+                </div>
+                <div class="tab-panel hidden" id="tab-deb" role="tabpanel" aria-labelledby="btn-deb">
+                    <div class="prose" id="content-deb"></div>
+                </div>
+                <div class="tab-panel hidden" id="tab-pou" role="tabpanel" aria-labelledby="btn-pou">
+                    <div class="prose" id="content-pou"></div>
+                </div>
             </div>
         </section>
 
         <!-- ── PROGRAMME ── -->
-        <section id="programme" class="section">
-            <div class="section-head">
-                <span class="section-label">Maquette pédagogique</span>
-                <h2 class="section-title">Programme de la formation</h2>
-            </div>
-            <div class="programme-toolbar">
-                <div class="search-box">
-                    <input type="text" id="search-mat" placeholder="Filtrer les matières…" autocomplete="off">
-                    <span class="search-ico">⌕</span>
+        <section id="programme" class="page-section" aria-labelledby="h-programme">
+            <div class="wrap">
+                <header class="section-hd">
+                    <span class="section-tag">Maquette pédagogique</span>
+                    <h2 class="section-title" id="h-programme">Programme de la formation</h2>
+                </header>
+
+                <!-- Toolbar : recherche + onglets semestres -->
+                <div class="prog-toolbar">
+                    <div class="search-field" role="search">
+                        <label for="search-mat" class="sr-only">Rechercher une matière</label>
+                        <input type="search" id="search-mat" placeholder="Rechercher une matière…" autocomplete="off">
+                        <span class="search-ico" aria-hidden="true">⌕</span>
+                    </div>
+                    <div class="sem-tabs" id="sem-tabs" role="tablist" aria-label="Semestres"></div>
                 </div>
-                <div class="sem-tabs" id="sem-tabs"></div>
+
+                <!-- Pattern maître-détail -->
+                <div class="prog-layout">
+                    <!-- Liste des UE (panneau gauche) -->
+                    <div class="prog-list" id="prog-list" role="list" aria-label="Unités d'enseignement"></div>
+                    <!-- Détail d'une UE (panneau droit) -->
+                    <div class="prog-detail" id="prog-detail" aria-live="polite" aria-label="Détail de l'unité d'enseignement">
+                        <div class="detail-placeholder">
+                            <p>← Sélectionnez une unité d'enseignement</p>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="no-results" id="no-results" aria-live="polite">Aucune matière ne correspond à votre recherche.</p>
             </div>
-            <div id="sem-panels"></div>
-            <p class="no-results" id="no-results">Aucune matière ne correspond.</p>
         </section>
 
         <!-- ── LOCALISATION ── -->
-        <section id="localisation" class="section">
-            <div class="section-head">
-                <span class="section-label">Localisation</span>
-                <h2 class="section-title">Campus de Fouillole — Pointe-à-Pitre</h2>
-            </div>
-            <div class="two-col two-col--map">
-                <div>
-                    <p class="map-adresse" id="map-adresse"></p>
-                    <a class="btn-primary" href="https://maps.google.com/?q=Université+des+Antilles+Fouillole+Pointe-à-Pitre" target="_blank">Ouvrir dans Google Maps →</a>
+        <section id="localisation" class="page-section" aria-labelledby="h-localisation">
+            <div class="wrap">
+                <header class="section-hd">
+                    <span class="section-tag">Localisation</span>
+                    <h2 class="section-title" id="h-localisation">Campus de Fouillole</h2>
+                </header>
+                <div class="two-col two-col--rev">
+                    <div>
+                        <address class="campus-address" id="campus-address"></address>
+                        <a class="btn-cta" href="https://maps.google.com/?q=Université+des+Antilles+Fouillole+Pointe-à-Pitre" target="_blank" rel="noopener">
+                            Itinéraire via Google Maps →
+                        </a>
+                    </div>
+                    <div id="map" role="application" aria-label="Carte du campus"></div>
                 </div>
-                <div id="map"></div>
             </div>
         </section>
 
         <!-- ── CONTACT ── -->
-        <section id="contact" class="section">
-            <div class="section-head">
-                <span class="section-label">Informations pratiques</span>
-                <h2 class="section-title">Contact &amp; informations</h2>
+        <section id="contact" class="page-section" aria-labelledby="h-contact">
+            <div class="wrap">
+                <header class="section-hd">
+                    <span class="section-tag">Informations pratiques</span>
+                    <h2 class="section-title" id="h-contact">Contact &amp; informations</h2>
+                </header>
+                <div class="contact-grid" id="contact-grid" role="list"></div>
             </div>
-            <div class="contact-grid" id="contact-grid"></div>
         </section>
 
     </main>
 
-    <footer>
-        <div class="container-xl d-flex flex-column flex-md-row justify-content-between gap-2">
+    <!-- FOOTER -->
+    <footer role="contentinfo">
+        <div class="wrap footer-inner">
             <span>© Université des Antilles — Tous droits réservés</span>
-            <span>
-                <a href="https://www.univ-antilles.fr/" target="_blank">Site officiel</a>
-                <span class="sep">·</span>
-                <a href="https://formations.univ-antilles.fr/" target="_blank">Catalogue</a>
-                <span class="sep">·</span>
-                <a href="https://formations.univ-antilles.fr/api/?formation=45" target="_blank">API</a>
-            </span>
+            <nav aria-label="Liens institutionnels">
+                <a href="https://www.univ-antilles.fr/" target="_blank" rel="noopener">Site officiel</a>
+                <span aria-hidden="true">·</span>
+                <a href="https://formations.univ-antilles.fr/" target="_blank" rel="noopener">Catalogue</a>
+                <span aria-hidden="true">·</span>
+                <a href="https://formations.univ-antilles.fr/api/?formation=45" target="_blank" rel="noopener">API</a>
+            </nav>
         </div>
     </footer>
 
-</div>
+</div><!-- /#page -->
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Bouton retour en haut -->
+<button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Retour en haut de page">↑</button>
+
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="formation.js"></script>
 </body>
