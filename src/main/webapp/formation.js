@@ -73,7 +73,7 @@ window.toggleSyl = btn => {
     const body = btn.nextElementSibling;
     const open = body.classList.toggle('open');
     btn.setAttribute('aria-expanded', open);
-    btn.textContent = open ? '▴ Masquer le syllabus' : '▾ Voir le syllabus';
+    btn.textContent = open ? '- Masquer le syllabus' : '+ Voir le syllabus';
 };
 
 /* ── Rendu d'une matière ── */
@@ -103,7 +103,7 @@ function renderMatiere(m) {
         ? `<p class="mat-resp">Responsable : <a href="mailto:${m.responsable}">${m.responsable}</a></p>` : '';
 
     const syllabus = hasSyl ? `
-        <button class="syl-btn" onclick="toggleSyl(this)" aria-expanded="false">▾ Voir le syllabus</button>
+        <button class="syl-btn" onclick="toggleSyl(this)" aria-expanded="false">+ Voir le syllabus</button>
         <div class="syl-content" role="region" aria-label="Syllabus">${clean(m.syllabus)}</div>` : '';
 
     return `<article class="mat-item" data-name="${m.intituler_matiere.toLowerCase()}">
@@ -169,7 +169,7 @@ function buildUEList(semId, ues) {
                 <div class="ue-row-title">${ue.descriptifUE}</div>
                 <div class="ue-row-meta">${nb} matière(s) · ${totalH}h · Coef. ${ue.coefue}</div>
             </div>
-            <span class="ue-row-arrow" aria-hidden="true">›</span>
+            <span class="ue-row-arrow" aria-hidden="true"></span>
         </div>`;
     }).join('');
 }
@@ -185,7 +185,7 @@ function switchSem(btn, semId) {
 
     // Reset détail
     document.getElementById('prog-detail').innerHTML =
-        `<div class="detail-placeholder"><p>← Sélectionnez une unité d'enseignement</p></div>`;
+        `<div class="detail-placeholder"><p>Sélectionnez une unité d'enseignement</p></div>`;
 
     // Reset recherche
     document.getElementById('search-mat').value = '';
@@ -232,7 +232,7 @@ function initSearch() {
                     <div class="ue-row-title">${r.ue.descriptifUE}</div>
                     <div class="ue-row-meta">${r.mats.length} résultat(s) · ${r.ue.periode}</div>
                 </div>
-                <span class="ue-row-arrow" aria-hidden="true">›</span>
+                <span class="ue-row-arrow" aria-hidden="true"></span>
              </div>`
         ).join('');
 
@@ -399,7 +399,7 @@ fetch('https://formations.univ-antilles.fr/api/?formation=45')
     .catch(err => {
         document.getElementById('loader').innerHTML = `
         <div style="max-width:340px;text-align:center;padding:32px">
-            <div style="font-size:2rem;color:#e8311a;margin-bottom:12px">✕</div>
+            <div style="font-size:1rem;font-weight:700;color:#e8311a;margin-bottom:12px">Erreur</div>
             <div style="font-weight:700;color:#00337a;font-size:1.05rem;margin-bottom:8px">Données inaccessibles</div>
             <div style="color:#4b5563;font-size:13px">${err.message}</div>
         </div>`;
